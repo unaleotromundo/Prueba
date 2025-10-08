@@ -161,8 +161,8 @@ if st.session_state.page == 'home':
         with cols[i % 3]: 
             btn_label = f"{data['icon']} {nombre}"
             
-            if st.button(btn_label, key=nombre):
-                navigate_to_dashboard(nombre)
+            # ✅ CORRECCIÓN CLAVE: usar on_click en lugar de if st.button()
+            st.button(btn_label, key=nombre, on_click=navigate_to_dashboard, args=(nombre,))
 
     st.write("")
     st.markdown("---")
