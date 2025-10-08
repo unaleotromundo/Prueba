@@ -116,10 +116,10 @@ if 'theme' not in st.session_state:
 
 if 'comerciantes' not in st.session_state:
     st.session_state.comerciantes = {
-        "c1": {"id": "c1", "nombre": "María Artesanías", "email": "maria@feria.com", "productos": []},
-        "c2": {"id": "c2", "nombre": "Carlos Juguetes", "email": "carlos@feria.com", "productos": []},
-        "c3": {"id": "c3", "nombre": "Lucía Gastronomía", "email": "lucia@feria.com", "productos": []},
-        "c4": {"id": "c4", "nombre": "Andrés Tecnología", "email": "andres@feria.com", "productos": []},
+        "c1": {"id": "c1", "nombre": "María Artesanías", "email": "maria@feria.com"},
+        "c2": {"id": "c2", "nombre": "Carlos Juguetes", "email": "carlos@feria.com"},
+        "c3": {"id": "c3", "nombre": "Lucía Gastronomía", "email": "lucia@feria.com"},
+        "c4": {"id": "c4", "nombre": "Andrés Tecnología", "email": "andres@feria.com"},
     }
 
 if 'productos' not in st.session_state:
@@ -223,8 +223,7 @@ elif st.session_state.modo == 'registro':
             st.session_state.comerciantes[cid] = {
                 "id": cid,
                 "nombre": nombre,
-                "email": email,
-                "productos": []
+                "email": email
             }
             st.success("¡Registro exitoso!")
             time.sleep(1)
@@ -323,9 +322,10 @@ elif st.session_state.modo == 'gestion':
     # Exportar
     if st.button("📤 Exportar datos"):
         json_data = exportar_json()
-        if json_
-            b64 = json_data.encode().hex()
-            st.markdown(f'<a href="data:file/json;base16,{b64}" download="catalogo.json" class="btn">⬇️ Descargar JSON</a>', unsafe_allow_html=True)
+        if json_data:  # ✅ CORREGIDO: condición completa
+            b64 = base64.b64encode(json_data.encode()).decode()
+            href = f'<a href="data:file/json;base64,{b64}" download="catalogo-feria-virtual-{datetime.now().strftime("%Y-%m-%d")}.json" class="btn">⬇️ Descargar JSON</a>'
+            st.markdown(href, unsafe_allow_html=True)
     
     # Importar
     uploaded_file = st.file_uploader("📥 Importar catálogo", type="json")
