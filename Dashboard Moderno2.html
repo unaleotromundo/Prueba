@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Corporate Elegante</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #d4af37;
+            --accent-secondary: #c19a2e;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --sidebar-width: 280px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent-primary: #c19a2e;
+            --accent-secondary: #a88826;
+            --border-color: rgba(193, 154, 46, 0.3);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--accent-primary);
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item a:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .nav-item.active a {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .nav-item.active a::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item a .material-icons-outlined {
+            margin-right: 15px;
+            font-size: 22px;
+        }
+
+        .main-container {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
+        }
+
+        .navbar {
+            background: var(--bg-secondary);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .navbar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon .material-icons-outlined {
+            font-size: 24px;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-container {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar-title {
+                font-size: 16px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .section-header h1 {
+                font-size: 24px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">CORPORATE</div>
+            <div class="user-info">
+                <div class="user-avatar">AD</div>
+                <span>Admin User</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item active">
+                    <a href="#" onclick="showContent('dashboard', event)">
+                        <span class="material-icons-outlined">dashboard</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showContent('analytics', event)">
+                        <span class="material-icons-outlined">analytics</span>
+                        Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showContent('reports', event)">
+                        <span class="material-icons-outlined">description</span>
+                        Reports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showContent('clients', event)">
+                        <span class="material-icons-outlined">business_center</span>
+                        Clients
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showContent('settings', event)">
+                        <span class="material-icons-outlined">settings</span>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-container">
+        <header class="navbar">
+            <div class="navbar-left">
+                <span class="material-icons-outlined menu-toggle" id="menuToggle">menu</span>
+                <div class="navbar-title">Executive Dashboard</div>
+            </div>
+            <div class="navbar-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span class="material-icons-outlined" style="font-size: 18px;">brightness_6</span>
+                    Tema
+                </button>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <section id="content-dashboard" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard Principal</h1>
+                    <p>Vista ejecutiva con métricas clave y KPIs del negocio. Monitoreo en tiempo real del rendimiento corporativo.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">trending_up</span>
+                        </div>
+                        <h3>Revenue Growth</h3>
+                        <p>Análisis de crecimiento de ingresos y proyecciones trimestrales para toma de decisiones estratégicas.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">groups</span>
+                        </div>
+                        <h3>Client Portfolio</h3>
+                        <p>Gestión integral de cartera de clientes con segmentación avanzada y análisis de valor.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">assessment</span>
+                        </div>
+                        <h3>Performance Metrics</h3>
+                        <p>Indicadores clave de rendimiento empresarial con benchmarks del sector y alertas personalizadas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-analytics" class="content-section">
+                <div class="section-header">
+                    <h1>Analytics Avanzado</h1>
+                    <p>Herramientas de análisis profundo con visualizaciones interactivas y reportes predictivos.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">insights</span>
+                        </div>
+                        <h3>Business Intelligence</h3>
+                        <p>Análisis inteligente de datos con machine learning para identificar patrones y oportunidades.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">query_stats</span>
+                        </div>
+                        <h3>Data Visualization</h3>
+                        <p>Dashboards interactivos con gráficos dinámicos para una comprensión rápida de métricas complejas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-reports" class="content-section">
+                <div class="section-header">
+                    <h1>Reportes Ejecutivos</h1>
+                    <p>Generación automatizada de reportes financieros y operacionales con exportación multi-formato.</p>
+                </div>
+            </section>
+
+            <section id="content-clients" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Clientes</h1>
+                    <p>CRM integrado con seguimiento de interacciones, historial completo y gestión de oportunidades.</p>
+                </div>
+            </section>
+
+            <section id="content-settings" class="content-section">
+                <div class="section-header">
+                    <h1>Configuración</h1>
+                    <p>Panel de administración con control de usuarios, permisos, integraciones y personalización avanzada.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function showContent(contentId, event) {
+            event.preventDefault();
+            
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(`content-${contentId}`).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active');
+            
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+        }
+
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('open') && 
+                !sidebar.contains(e.target) && 
+                e.target !== menuToggle) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
