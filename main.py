@@ -2,10 +2,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# --- 1. Configuración Inicial y Estilos ---
 st.set_page_config(layout="wide", page_title="Galería Minimalista 🌐")
 
-# Mapeo mejorado: incluye título visual y fuente específica
 DASHBOARD_FILES = {
     "01. Corporate (Inter)": {
         "file": "Dashboard Moderno2.html",
@@ -45,10 +43,8 @@ DASHBOARD_FILES = {
     },
 }
 
-# CSS con fuentes de Google y estilos mejorados
 STYLE_HTML = """
 <style>
-/* --- Fuentes desde Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap');
@@ -56,7 +52,6 @@ STYLE_HTML = """
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-/* ----------------- REINICIO Y FONDO ----------------- */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;} 
@@ -66,7 +61,6 @@ header {visibility: hidden;}
     font-family: 'Inter', sans-serif;
 }
 
-/* ----------------- TÍTULO PRINCIPAL ----------------- */
 .titulo-minimal {
     font-family: 'Inter', sans-serif;
     font-size: 72px;
@@ -93,20 +87,18 @@ header {visibility: hidden;}
     text-transform: uppercase;
 }
 
-/* ----------------- TÍTULO DEL DASHBOARD ACTIVO ----------------- */
 .dashboard-title {
     font-size: 38px;
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     text-align: left;
     margin: 0;
     padding: 8px 0;
-    text-shadow: 0 0 8px rgba(0, 200, 255, 0.3);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
-/* ----------------- BOTONES COMPACTOS ----------------- */
 div.stButton > button {
     width: 100%; 
     height: 80px;
@@ -144,7 +136,6 @@ div.stButton > button:hover {
     transform: scale(1.02); 
 }
 
-/* ----------------- IFRAME ----------------- */
 iframe[title="streamlit_component"] {
     height: 1000px !important;
     width: 100%;
@@ -155,9 +146,6 @@ iframe[title="streamlit_component"] {
 </style>
 """
 st.markdown(STYLE_HTML, unsafe_allow_html=True)
-
-
-# --- 2. Funciones de Lógica y Estado ---
 
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
@@ -180,16 +168,12 @@ def load_html_file(filename):
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        st.error(f"⚠️ Error: El archivo '{filename}' no se encontró. Asegúrate de que esté en la misma carpeta que main.py.")
+        st.error(f"⚠️ Error: El archivo '{filename}' no se encontró.")
         return None
     except Exception as e:
         st.error(f"❌ Error al leer el archivo '{filename}': {e}")
         return None
 
-
-# --- 3. Renderizado del Contenido ---
-
-# --- VISTA PRINCIPAL (HOME) ---
 if st.session_state.page == 'home':
     st.markdown('<div class="titulo-minimal">Mirá Cho!</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitulo-minimal">Directorio de Temas | Estilo Consola Minimalista</div>', unsafe_allow_html=True)
@@ -202,14 +186,8 @@ if st.session_state.page == 'home':
 
     st.write("")
     st.markdown("---")
-    st.markdown(
-        '<p style="text-align: center; color: #555555; font-size: 14px; margin-top: 20px;">'
-        'Cada vista se carga directamente desde el archivo HTML original, garantizando la integridad funcional.'
-        '</p>',
-        unsafe_allow_html=True
-    )
+    st.markdown('<p style="text-align: center; color: #555555; font-size: 14px; margin-top: 20px;">Cada vista se carga directamente desde el archivo HTML original, garantizando la integridad funcional.</p>', unsafe_allow_html=True)
 
-# --- VISTA DE DASHBOARD ESPECÍFICO ---
 elif st.session_state.page == 'dashboard_view' and st.session_state.selected_dashboard:
     clave_actual = st.session_state.selected_dashboard
     archivo_html = DASHBOARD_FILES[clave_actual]['file']
