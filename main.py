@@ -1,21 +1,22 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import os
+import random
 
 # --- 1. Configuración Inicial y Estilos ---
-st.set_page_config(layout="wide", page_title="Galería Minimalista 🌐")
+st.set_page_config(layout="wide", page_title="Galería Cósmica 🌌")
 
 # Mapeo de los nombres a mostrar con el nombre real del archivo
 DASHBOARD_FILES = {
-    "01. Corporate (Inter)": {"file": "Dashboard Moderno2.html", "icon": "💎"},
-    "02. Financial (Plex)": {"file": "dashboard-financial.html", "icon": "📈"},
-    "03. Industrial (Rajdhani)": {"file": "dashboard-industrial.html", "icon": "🏭"},
-    "04. Medical (Roboto)": {"file": "dashboard-medical.html", "icon": "🩺"},
-    "05. Retail/Sales (Outfit)": {"file": "dashboard-retail.html", "icon": "🛍️"},
-    "06. Tech/Vibrant (Poppins)": {"file": "dashboard-tech.html", "icon": "🧠"},
+    "01. VISIONES CÓSMICAS": {"file": "Dashboard Moderno2.html", "icon": "👁️"},
+    "02. MENTALISMO ABSTRACTO": {"file": "dashboard-financial.html", "icon": "🧠"},
+    "03. LABERINTOS INTERIORES": {"file": "dashboard-industrial.html", "icon": "🌀"},
+    "04. PULSO GALÁCTICO": {"file": "dashboard-medical.html", "icon": "💖"},
+    "05. ECOS FRACTALES": {"file": "dashboard-retail.html", "icon": "⚛️"},
+    "06. SINFONÍA PSÍQUICA": {"file": "dashboard-tech.html", "icon": "🔮"},
 }
 
-# CSS para el estilo Dark, Minimalista y ahora COMPACTO
+# --- ESTILOS PSICODÉLICOS Y ABSTRACTOS ---
 STYLE_HTML = """
 <style>
 /* ----------------- REINICIO Y FONDO ----------------- */
@@ -24,100 +25,197 @@ footer {visibility: hidden;}
 header {visibility: hidden;} 
 
 .stApp {
-    background-color: #0A0A0A; 
-    font-family: 'Inter', sans-serif;
+    background: linear-gradient(45deg, #1A001A, #000033, #1A001A); /* Fondo oscuro con degradado profundo */
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite; /* Animación de fondo */
+    font-family: 'Rubik Mono One', monospace; /* Fuente impactante */
+    color: #E0E0E0;
+    overflow: hidden; /* Para evitar scroll inesperado con elementos absolutos */
 }
 
-/* ----------------- TÍTULO Y BANNER (Efecto Thin-Glow) ----------------- */
-.titulo-minimal {
-    font-family: 'Inter', sans-serif;
-    font-size: 72px;
-    font-weight: 200; 
+@keyframes gradientShift {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Contenedor principal para posicionar elementos */
+.main-content-area {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ----------------- TÍTULO CENTRAL PSICODÉLICO ----------------- */
+.titulo-psicodelico {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 90px;
+    font-weight: 900;
     text-align: center;
-    letter-spacing: 5px;
+    letter-spacing: 10px;
     color: #FFFFFF;
     text-transform: uppercase;
     text-shadow: 
-        0 0 5px rgba(0, 200, 255, 0.5), 
-        0 0 10px rgba(0, 200, 255, 0.2);
-    margin-bottom: 5px;
-    border-bottom: 1px solid rgba(0, 200, 255, 0.2); 
-    padding-bottom: 10px;
+        0 0 10px #FF00FF, /* Magenta */
+        0 0 20px #00FFFF, /* Cyan */
+        0 0 30px #FFFF00; /* Amarillo */
+    animation: pulsateGlow 2s infinite alternate ease-in-out; /* Animación de resplandor */
+    margin-bottom: 0px;
+    z-index: 100; /* Asegurarse de que esté por encima de los botones */
+    position: relative; /* Para que el z-index funcione bien */
+    user-select: none; /* No seleccionable */
 }
 
-.subtitulo-minimal {
-    font-size: 16px;
-    font-weight: 300;
-    color: #888888; 
+@keyframes pulsateGlow {
+    0% { text-shadow: 0 0 8px #FF00FF, 0 0 16px #00FFFF, 0 0 24px #FFFF00; }
+    100% { text-shadow: 0 0 15px #FF00FF, 0 0 25px #00FFFF, 0 0 40px #FFFF00; }
+}
+
+.subtitulo-psicodelico {
+    font-family: 'Electrolize', sans-serif; /* Otra fuente más técnica */
+    font-size: 20px;
+    font-weight: 400;
+    color: #AAAAAA; 
     text-align: center;
-    letter-spacing: 2px;
-    margin-bottom: 60px;
+    letter-spacing: 3px;
+    margin-top: 10px;
+    margin-bottom: 80px; /* Más espacio para los botones */
     text-transform: uppercase;
+    z-index: 100;
+    position: relative;
+    user-select: none;
 }
 
-/* ----------------- SECCIÓN DE BOTONES (Compactos) ----------------- */
+/* ----------------- BOTONES ABSTRACTOS ALREDEDOR DEL TÍTULO ----------------- */
 
-/* Estilo para Streamlit Button (El Ítem de la Lista) */
 div.stButton > button {
-    width: 100%; 
-    height: 80px; /* ALTURA REDUCIDA A LA MITAD */ 
-    border: 1px solid #222222; 
-    border-radius: 4px; 
-    padding: 15px 25px; /* Más espacio horizontal que vertical */
-    background-color: #1A1A1A; 
-    color: #BDBDBD; 
-    font-family: 'Inter', sans-serif;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    
-    /* Alineación Horizontal (Icono y Texto en la misma línea) */
-    display: flex;
-    flex-direction: row; 
-    justify-content: flex-start; /* Alinear el contenido a la izquierda */
-    align-items: center;
-    text-align: left;
-    white-space: nowrap; /* Evitar que el texto se rompa */
-}
-
-/* Ajusta el texto dentro del botón */
-div.stButton > button > div > p {
-    font-weight: 500;
-    font-size: 15px; 
-    margin: 0;
-    padding-left: 15px; /* Separación entre el icono y el texto */
-    color: #FFFFFF; 
-    text-transform: uppercase;
+    position: absolute; /* Posicionamiento libre */
+    width: 250px; 
+    height: 90px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    color: #E0E0E0;
+    font-family: 'Orbitron', sans-serif; /* Fuente futurista para botones */
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 2px solid; /* Borde para el resplandor */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 50; /* Por debajo del título */
+    cursor: pointer;
+    overflow: hidden; /* Para ocultar cualquier cosa que se desborde al animar */
 }
 
-/* Efecto hover DRAMÁTICO y Minimalista */
+/* Formas Abstractas (modificando border-radius y transform) */
+.btn-shape-1 { 
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
+    top: 15%; left: 10%; transform: rotate(-15deg) scale(1);
+    border-color: #FF00FF; /* Magenta */
+    box-shadow: 0 0 10px #FF00FF;
+}
+.btn-shape-2 { 
+    border-radius: 30% 70% 60% 40% / 70% 40% 60% 30%; 
+    top: 25%; right: 10%; transform: rotate(10deg) scale(1);
+    border-color: #00FFFF; /* Cyan */
+    box-shadow: 0 0 10px #00FFFF;
+}
+.btn-shape-3 { 
+    border-radius: 70% 30% 70% 30% / 30% 70% 30% 70%; 
+    bottom: 25%; left: 8%; transform: rotate(20deg) scale(1);
+    border-color: #FFFF00; /* Amarillo */
+    box-shadow: 0 0 10px #FFFF00;
+}
+.btn-shape-4 { 
+    border-radius: 40% 60% 70% 30% / 60% 70% 30% 40%; 
+    bottom: 15%; right: 12%; transform: rotate(-8deg) scale(1);
+    border-color: #FF69B4; /* Rosa */
+    box-shadow: 0 0 10px #FF69B4;
+}
+.btn-shape-5 { 
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; /* Círculo/Óvalo */
+    top: 50%; left: 5%; transform: translateY(-50%) rotate(-5deg) scale(1);
+    border-color: #9370DB; /* Púrpura */
+    box-shadow: 0 0 10px #9370DB;
+}
+.btn-shape-6 { 
+    border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; /* Óvalo */
+    top: 50%; right: 5%; transform: translateY(-50%) rotate(5deg) scale(1);
+    border-color: #00FF7F; /* Verde Primavera */
+    box-shadow: 0 0 10px #00FF7F;
+}
+
+/* Efecto Hover Psicodélico */
 div.stButton > button:hover {
-    background-color: #0F0F0F; 
-    border-color: #00C8FF; 
-    color: #00C8FF;
-    box-shadow: 0 0 15px rgba(0, 200, 255, 0.6); 
-    transform: scale(1.02); 
+    background: rgba(255, 255, 255, 0.1); /* Fondo más claro al pasar */
+    color: #FFFFFF;
+    box-shadow: 0 0 25px var(--hover-color), 0 0 50px var(--hover-color); /* Resplandor intenso */
+    transform: scale(1.05) rotate(var(--hover-rotate, 0deg)); /* Un poco de rotación aleatoria */
+    z-index: 150; /* Lo trae al frente */
+    animation: swirlHover 0.8s forwards; /* Animación de remolino */
 }
 
-/* Estilo del iframe de visualización (Dashboard View) */
+/* Variables para los colores de hover dinámicos */
+.btn-shape-1:hover { --hover-color: #FF00FF; --hover-rotate: -20deg; }
+.btn-shape-2:hover { --hover-color: #00FFFF; --hover-rotate: 15deg; }
+.btn-shape-3:hover { --hover-color: #FFFF00; --hover-rotate: 25deg; }
+.btn-shape-4:hover { --hover-color: #FF69B4; --hover-rotate: -12deg; }
+.btn-shape-5:hover { --hover-color: #9370DB; --hover-rotate: -10deg; }
+.btn-shape-6:hover { --hover-color: #00FF7F; --hover-rotate: 8deg; }
+
+@keyframes swirlHover {
+    0% { transform: scale(1.02) rotate(var(--original-rotate, 0deg)); }
+    50% { transform: scale(1.08) rotate(var(--hover-rotate)); }
+    100% { transform: scale(1.05) rotate(var(--hover-rotate)); }
+}
+
+/* Ajustes para el contenido del botón */
+div.stButton > button > div > p {
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+
+/* ----------------- VISTA DEL DASHBOARD ----------------- */
+.dashboard-view-container {
+    padding: 30px;
+    background-color: #1A001A; /* Un fondo oscuro para la vista del dashboard */
+    min-height: 100vh;
+}
+
 iframe[title="streamlit_component"] {
-    height: 1000px !important;
+    height: 900px !important; /* Altura generosa para el dashboard */
     width: 100%;
-    border-radius: 4px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
-    border: 1px solid #222222;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), 0 0 50px rgba(255, 0, 255, 0.2); /* Sombra vibrante */
+    border: 2px solid #00FFFF; /* Borde cian */
 }
 </style>
+
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Electrolize&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 """
 st.markdown(STYLE_HTML, unsafe_allow_html=True)
 
 
 # --- 2. Funciones de Lógica y Estado ---
 
-# Inicialización de estado y globos
+# Inicialización de estado y confeti (¡ahora es confeti!)
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
-    st.balloons() # Globos al inicio
+    st.snow() # Nieve o confeti para un efecto más psicodélico
+    st.balloons() # También globos para ese efecto
 
 if 'selected_dashboard' not in st.session_state:
     st.session_state.selected_dashboard = None
@@ -139,37 +237,46 @@ def load_html_file(filename):
         with open(filepath, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        st.error(f"⚠️ Error: El archivo '{filename}' no se encontró. Asegúrate de que esté en la misma carpeta que main.py.")
+        st.error(f"⚠️ ¡Error de Realidad\! El archivo '{filename}' no se encuentra en este plano existencial.")
         return None
     except Exception as e:
-        st.error(f"❌ Error al leer el archivo '{filename}': {e}")
+        st.error(f"❌ ¡Anomalía dimensional\! Error al leer el archivo '{filename}': {e}")
         return None
 
 # --- 3. Renderizado del Contenido ---
 
-# --- VISTA PRINCIPAL (HOME) - Muestra los Botones Compactos ---
+# --- VISTA PRINCIPAL (HOME) - Galería de Formas Abstractas ---
 if st.session_state.page == 'home':
+    # Contenedor para los elementos posicionados absolutamente
+    st.markdown('<div class="main-content-area">', unsafe_allow_html=True)
+    
     # Título y subtítulo
-    st.markdown('<div class="titulo-minimal">Mirá Cho!</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitulo-minimal">Directorio de Temas | Estilo Consola Minimalista</div>', unsafe_allow_html=True)
+    st.markdown('<div class="titulo-psicodelico">EL NEXO</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitulo-psicodelico">CONEXIONES VISUALES A TRAVÉS DEL CAOS ORDENADO</div>', unsafe_allow_html=True)
     
-    st.subheader("Selecciona un Tema para Cargar la Vista Completa")
-    st.markdown("---")
-
-    # Usamos 3 columnas, pero las tarjetas son más pequeñas.
-    cols = st.columns(3) 
+    # Asignar clases de estilo a cada botón para las formas y posiciones
+    button_styles = [
+        "btn-shape-1", "btn-shape-2", "btn-shape-3", 
+        "btn-shape-4", "btn-shape-5", "btn-shape-6"
+    ]
     
-    # Iterar y crear botones en la cuadrícula
+    # Crear los botones con posicionamiento absoluto
     for i, (nombre, data) in enumerate(DASHBOARD_FILES.items()):
-        with cols[i % 3]: 
-            btn_label = f"{data['icon']} {nombre}"
-            
-            if st.button(btn_label, key=nombre):
-                navigate_to_dashboard(nombre)
+        # Se genera un ID único para cada botón para el CSS
+        st.markdown(f'<div class="{button_styles[i]}" id="button_{i}">', unsafe_allow_html=True)
+        # El st.button real, con un key único
+        if st.button(f"{data['icon']} {nombre}", key=f"dash_btn_{i}"):
+            navigate_to_dashboard(nombre)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.write("")
-    st.markdown("---")
-    st.markdown('<p style="text-align: center; color: #555555; font-size: 14px; margin-top: 20px;">Cada vista se carga directamente desde el archivo HTML original, garantizando la integridad funcional.</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True) # Cierra main-content-area
+    
+    # Pie de página sutil
+    st.markdown("""
+        <div style="position: fixed; bottom: 20px; width: 100%; text-align: center; color: #555555; font-size: 12px; z-index: 10;">
+            <p>👁️ EXPLORA EL MULTIVERSO VISUAL 👁️</p>
+        </div>
+    """, unsafe_allow_html=True)
 
 
 # --- VISTA DE DASHBOARD ESPECÍFICO - Muestra el HTML completo ---
@@ -178,16 +285,14 @@ elif st.session_state.page == 'dashboard_view' and st.session_state.selected_das
     clave_actual = st.session_state.selected_dashboard
     archivo_html = DASHBOARD_FILES[clave_actual]['file']
     
-    # Botón de regreso
-    col_back, col_title = st.columns([1, 4])
-    
-    with col_back:
-        st.button("⬅️ VOLVER AL DIRECTORIO", on_click=navigate_to_home)
+    # Contenedor para la vista del dashboard para un fondo consistente
+    st.markdown('<div class="dashboard-view-container">', unsafe_allow_html=True)
 
-    with col_title:
-        st.header(f"Vista Activa: {clave_actual}")
+    # Botón de regreso con un estilo más alineado
+    st.button("⬅️ REGRESAR AL NEXO", on_click=navigate_to_home, help="Vuelve a la galería de abstracciones.")
 
-    st.markdown("---")
+    st.markdown(f"<h2 style='color: #00FFFF; font-family: Orbitron, sans-serif; text-shadow: 0 0 5px #00FFFF;'>PROYECCIÓN ACTIVA: {clave_actual}</h2>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-top: 2px solid #FF00FF;'>", unsafe_allow_html=True) # Separador psicodélico
     
     # Cargar el contenido HTML del disco
     dashboard_html = load_html_file(archivo_html)
@@ -196,6 +301,7 @@ elif st.session_state.page == 'dashboard_view' and st.session_state.selected_das
         # Renderizar el contenido HTML
         components.html(
             dashboard_html,
-            height=1000, 
+            height=900, 
             scrolling=True
         )
+    st.markdown('</div>', unsafe_allow_html=True) # Cierra dashboard-view-container
