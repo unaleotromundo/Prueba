@@ -3,8 +3,8 @@ from streamlit.components.v1 import html
 
 # ===============================================
 # 1. CONTENIDOS HTML REALES DE LOS DASHBOARDS
+# (El contenido completo de tus archivos HTML está aquí)
 # ===============================================
-# Se define el contenido HTML completo de cada dashboard como una cadena de texto.
 
 HTML_MODERNO = """
 <!DOCTYPE html>
@@ -2040,12 +2040,22 @@ div.stButton > button {
     font-size: 18px;
     transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
-    /* Centrado del contenido del botón */
+    /* El contenido del botón se ajusta automáticamente, ya que es una línea simple */
     display: flex;
     flex-direction: column; 
     justify-content: center;
     align-items: center;
     text-align: center;
+    white-space: normal; /* Permite que el texto envuelva si es necesario */
+    line-height: 1.2;
+}
+
+/* Estilo para el texto dentro del botón (ahora incluye el icono) */
+div.stButton > button p {
+    font-weight: 600;
+    font-size: 18px; /* Ajuste para el texto */
+    margin: 0;
+    padding: 0;
 }
 
 /* Efecto hover */
@@ -2054,12 +2064,6 @@ div.stButton > button:hover {
     border-color: #FFFF00; 
     box-shadow: 0 6px 16px rgba(255, 255, 0, 0.4);
     transform: translateY(-2px);
-}
-
-/* Estilo para el icono dentro del botón */
-div.stButton > button span {
-    font-size: 40px;
-    margin-bottom: 10px;
 }
 </style>
 """
@@ -2111,7 +2115,6 @@ if st.session_state.page == 'dashboard_view' and st.session_state.selected_dashb
     dashboard_html = HTML_CONTENT.get(clave_actual, "<h1>Error: Contenido no encontrado</h1>")
 
     # Renderiza el contenido HTML completo.
-    # El alto de 1200px es una estimación para la mayoría de los dashboards.
     html(dashboard_html, height=1200, scrolling=True)
 
 # --- VISTA PRINCIPAL (HOME) ---
@@ -2128,21 +2131,15 @@ else:
     # Iteramos sobre las plantillas y creamos los botones
     for i, plantilla in enumerate(PLANTILLAS):
         with cols[i]:
-            # El contenido del botón se inyecta directamente con Markdown
-            btn_label = f"""
-            <div style='text-align: center;'>
-                <span class="btn-icon">{plantilla['icono']}</span><br>
-                {plantilla['nombre']}
-            </div>
-            """
-            # Usamos un botón de Streamlit, y le aplicamos el estilo CSS definido arriba.
-            # El texto del botón es HTML inyectado para controlar la apariencia.
-            if st.button(btn_label, key=plantilla['clave'], unsafe_allow_html=True):
+            # **LA SOLUCIÓN AL ERROR:** El label del botón ahora es una cadena simple,
+            # combinando el icono y el nombre, permitiendo que el CSS global lo estilice.
+            btn_label_simple = f"{plantilla['icono']} {plantilla['nombre']}"
+            
+            if st.button(btn_label_simple, key=plantilla['clave']):
                 navigate_to_dashboard(plantilla['clave'])
 
     # Contenido extra en la página principal
     st.write("---")
     st.info("Haz clic en cualquier botón para cargar la plantilla completa usando Streamlit Components.")
     
-    # Solo confeti al inicio (Home)
     st.balloons()
