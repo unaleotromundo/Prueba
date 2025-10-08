@@ -152,7 +152,6 @@ if st.session_state.page == 'home':
     # Título y subtítulo
     st.markdown('<div class="titulo-minimal">Mirá Cho!</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitulo-minimal">Directorio de Temas | Estilo Consola Minimalista</div>', unsafe_allow_html=True)
-    st.markdown("---")
 
     # Usamos 3 columnas, pero las tarjetas son más pequeñas.
     cols = st.columns(3) 
